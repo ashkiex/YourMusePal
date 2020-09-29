@@ -127,3 +127,12 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+/token.txt
+/downloads/
+/downloads/
+/.idea/modules.xml
+/.idea/inspectionProfiles/profiles_settings.xml
+/.idea/telegram bot.iml
+/.idea/vcs.xml
+/.idea/misc.xml
+/.idea/inspectionProfiles/Project_Default.xml

@@ -13,9 +13,7 @@ logger = logging.getLogger(__name__)
 
 def start(update, context):
     update.message.reply_text(
-        'Hello, world!'
-        'I will help you download Youtube videos in either .mp3 or .mp4 format.'
-        'Simply use either /mp3 or /mp4 followed by the link to the video.'
+        'Hello, world! I will help you download Youtube videos in either .mp3 or .mp4 format. Simply use either /mp3 or /mp4 followed by the link to the video. Use /help for more.'
     )
 
 
@@ -88,6 +86,16 @@ def mp4(update, context):
     os.remove(fp)
 
 
+def help(update, context):
+    update.message.reply_text("""
+    Here are the list of commands:
+    ---------------------
+    /mp3 <link> - downloads the given Youtube video as .mp3
+    /mp4 <link> - downloads the given Youtube video as .mp4
+    ---------------------
+    """)
+
+
 def test(update, context):
     update.message.reply_text("Test received WOOO")
 
@@ -100,6 +108,7 @@ def main():
     dp.add_handler(CommandHandler("mp3", mp3))
     dp.add_handler(CommandHandler("mp4", mp4))
     dp.add_handler(CommandHandler("test", test))
+    dp.add_handler(CommandHandler("help", help))
 
     updater.start_polling()
 

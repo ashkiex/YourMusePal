@@ -1,8 +1,9 @@
-import logging, re, requests, ffmpeg
+import logging, re, requests, ffmpeg, os, subprocess
 from urllib.request import urlopen
 from telegram import (ReplyKeyboardMarkup, ReplyKeyboardRemove)
 from telegram.ext import (Updater, CommandHandler, MessageHandler, ConversationHandler)
 from pytube import YouTube
+from moviepy.editor import *
 
 # Enable logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
@@ -19,7 +20,27 @@ def start(update, context):
 
 
 def mp3(update, context):
-    pass
+    link = context.args[0]
+    print(link)
+    yt = YouTube(link)
+
+    update.message.reply_text('Roger! It may take a couple of minutes, depending on the length of the video. Please be patient!')
+    stream = yt.streams.first()
+    stream.download('./downloads')
+    print(stream.title)
+    fp1 = ('./downloads/' + yt.title + '.mp4')
+    fp2 = ('./downloads/' + yt.title + '.mp3')
+    video = VideoFileClip(os.path.join(fp1))
+    video.audio.write_audiofile(os.path.join(fp2))
+    # subprocess.call([
+    #     'ffmpeg',
+    #     '-i', os.path.join('./downloads', yt.title+'.mp4'), os.path.join('./downloads', yt.title+'.mp3')
+    # ], shell=True)
+    vid = open(fp2, 'rb')
+    update.message.reply_audio(vid)
+    vid.close()
+    os.remove(fp1)
+    os.remove(fp2)
 
     # if 'youtube' not in link:
     #     update.message.reply_text('Please send a valid youtube link!')
@@ -56,9 +77,15 @@ def mp4(update, context):
     print(link)
     yt = YouTube(link)
 
+    update.message.reply_text('Roger! It may take a couple of minutes, depending on the length of the video. Please be patient!')
     stream = yt.streams.first()
-    stream.download()
-    # stream.download('/downloads')
+    stream.download('./downloads')
+    print(stream.title)
+    fp = ('./downloads/' + yt.title + '.mp4')
+    vid = open(fp, 'rb')
+    update.message.reply_video(vid)
+    vid.close()
+    os.remove(fp)
 
 
 def test(update, context):
